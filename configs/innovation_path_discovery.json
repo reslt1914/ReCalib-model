@@ -1,0 +1,7 @@
+{
+  "train_conditions": 1003,
+  "validation_conditions": 251,
+  "main_ood_conditions": 108,
+  "genes": 977,
+  "config": "configs/innovation_experiments.yaml"
+}
