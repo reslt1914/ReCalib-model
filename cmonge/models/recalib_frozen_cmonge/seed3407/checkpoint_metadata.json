@@ -1,0 +1,13 @@
+{
+  "checkpoint_format": "flax_messagepack",
+  "seed": 3407,
+  "model_seed": 3407,
+  "data_seed": 3407,
+  "ae_seed": 1,
+  "num_train_iters": 10000,
+  "batch_size": 512,
+  "checkpoint_file": "models/recalib_frozen_cmonge/seed3407/model.msgpack",
+  "checkpoint_bytes": 387759,
+  "pytree_leaves": 45,
+  "verification_max_abs_diff": 0.0
+}
