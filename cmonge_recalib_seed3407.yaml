@@ -1,0 +1,105 @@
+project:
+  name: ReCalib with Frozen CMonge predictor seed3407
+  config_version: 1
+paths:
+  adata: data/mydata/sciplex_complete_v2.h5ad
+  de_key: lincs_DEGs
+  gene_names: crisp_outputs/mydata_baseline_calib_seed2024/gene_names.csv
+  split_manifests:
+    train_conditions: crisp_outputs/mydata_baseline_calib_seed2024/calib_train_conditions.csv
+    validation_conditions: crisp_outputs/mydata_baseline_calib_seed2024/calib_val_conditions.csv
+  train:
+    root: crisp_outputs/mydata_baseline_calib_seed2024/iid
+    'true': crisp_outputs/mydata_baseline_calib_seed2024/iid/x_true_condition_mean.csv
+    frozen_crisp: cmonge_outputs/mydata_frozen_cmonge_seed3407/fit/x_cmonge_condition_mean.csv
+    control: crisp_outputs/mydata_baseline_calib_seed2024/iid/x_ctrl_condition_mean.csv
+    metadata: crisp_outputs/mydata_baseline_calib_seed2024/iid/condition_metadata.csv
+    derive_residual: true
+    derive_delta_true: true
+    derive_delta_crisp: true
+  validation:
+    root: crisp_outputs/mydata_baseline_calib_seed2024/ood
+    'true': crisp_outputs/mydata_baseline_calib_seed2024/ood/x_true_condition_mean.csv
+    frozen_crisp: cmonge_outputs/mydata_frozen_cmonge_seed3407/validation/x_cmonge_condition_mean.csv
+    control: crisp_outputs/mydata_baseline_calib_seed2024/ood/x_ctrl_condition_mean.csv
+    metadata: crisp_outputs/mydata_baseline_calib_seed2024/ood/condition_metadata.csv
+    derive_residual: true
+    derive_delta_true: true
+    derive_delta_crisp: true
+  main_ood:
+    root: crisp_outputs/mydata_baseline_full/ood
+    'true': crisp_outputs/mydata_baseline_full/ood/x_true_condition_mean.csv
+    frozen_crisp: cmonge_outputs/mydata_frozen_cmonge_seed3407/main_ood/x_cmonge_condition_mean.csv
+    control: crisp_outputs/mydata_baseline_full/ood/x_ctrl_condition_mean.csv
+    metadata: crisp_outputs/mydata_baseline_full/ood/condition_metadata.csv
+    derive_residual: true
+    derive_delta_true: true
+    derive_delta_crisp: true
+  reference_results:
+    paper_main_summary: crisp_outputs/evidence_mydata/primary4/main_ood_primary4_table.csv
+    recalib_seed_2024: crisp_outputs/mydata_rc_full_seed2024_alpha04_w0/ood/x_calibrated_condition_mean.csv
+    recalib_seed_3407: crisp_outputs/mydata_rc_full_seed3407_alpha04_w0/ood/x_calibrated_condition_mean.csv
+    recalib_seed_42: crisp_outputs/mydata_rc_full_seed42_alpha04_w0/ood/x_calibrated_condition_mean.csv
+experiment:
+  cpu_threads: 6
+  seeds:
+  - 3407
+  expected_train_conditions: 1003
+  expected_validation_conditions: 251
+  expected_main_ood_conditions: 108
+  expected_gene_count: 977
+  primary_metric_direction:
+    mse_de: lower
+    pearson_de: higher
+    pearson_delta_de: higher
+    r2score_de: higher
+recalib:
+  epochs: 200
+  batch_size: 65536
+  learning_rate: 0.0008
+  weight_decay: 0.0001
+  hidden_dim: 256
+  gene_embedding_dim: 64
+  dropout: 0.05
+  patience: 40
+  residual_scaling_alpha: 0.5
+  de_gene_weight: 0.0
+  predicted_residual_l2: 0.0001
+gene_affine:
+  ridge_alphas:
+  - 0.0
+  - 0.0001
+  - 0.001
+  - 0.01
+  - 0.1
+  - 1.0
+  - 10.0
+ridge_residual:
+  ridge_alphas:
+  - 0.0001
+  - 0.001
+  - 0.01
+  - 0.1
+  - 1.0
+  - 10.0
+  - 100.0
+  standardize_continuous_features: true
+  gene_identity_encoding: sparse one-hot
+  drug_identity_encoding: sparse one-hot
+direct_mlp:
+  match_recalib_architecture: true
+  epochs: 200
+  batch_size: 65536
+  learning_rate: 0.0008
+  weight_decay: 0.0001
+  patience: 40
+statistics:
+  bootstrap_iterations: 10000
+  confidence_level: 0.95
+  paired_test: wilcoxon
+  multiple_testing_correction: holm
+output:
+  root: results
+  baseline_dir: results/cmonge_recalib
+  ablation_dir: results/recalib_ablations
+  cost_dir: results/compute_cost
