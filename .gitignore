@@ -1,0 +1,62 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# =========================
+# IDE / OS
+# =========================
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*~
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+log/
+wandb/
+
+# =========================
+# Large datasets / binaries
+# =========================
+*.h5
+*.h5ad
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+
+# =========================
+# Generated experiment outputs
+# =========================
+outputs/
+runs/
+checkpoints/
+results/
+result/
+tmp/
+temp/
+
+# =========================
+# Local environment files
+# =========================
+.env
+.venv/
+venv/
+
+# =========================
+# Backup files
+# =========================
+*.bak
+*.backup
